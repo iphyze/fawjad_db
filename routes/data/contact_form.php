@@ -102,8 +102,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       // === Email to Admin ===
       $mail->setFrom($_ENV['SMTP_USER'], "$siteName Contact Form");
       $mail->addAddress($_ENV['SMTP_USER']);
+      $mail->addBCC('support@fawjadglobal.com');
       $mail->addBCC('iphyze@gmail.com');
-      // $mail->addBCC('info@surefields.com');
       $mail->isHTML(true);
       $mail->Subject = "New Contact Form Submission - $siteName";
 
