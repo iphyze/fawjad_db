@@ -95,7 +95,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $mail->SMTPAuth = true;
       $mail->Username = $_ENV['SMTP_USER'];
       $mail->Password = $_ENV['SMTP_PASS'];
-      $mail->SMTPSecure = 'ssl';
+
+      // Match the Port to the Security Protocol
+      if ($_ENV['SMTP_PORT'] == 587) {
+          $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; 
+          $mail->Port = 587;
+      } else {
+          $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; // This is 'ssl'
+          $mail->Port = 465;
+      }
+
+      // Add this to help bypass some shared hosting certificate issues
+      $mail->SMTPOptions = array(
+          'ssl' => array(
+              'verify_peer' => false,
+              'verify_peer_name' => false,
+              'allow_self_signed' => true
+          )
+      );
+
       $mail->Port = $_ENV['SMTP_PORT'];
       $mail->CharSet = 'UTF-8';
 
